@@ -1,0 +1,396 @@
+hellorobot@hellorobot-NUC8i5BEHS:~$ stretch_system_check.py
+For use with S T R E T C H (R) from Hello Robot Inc.
+---------------------------------------------------------------------
+
+Model = Stretch RE1
+Tool = None
+Serial Number = stretch-re1-1030
+
+
+---- Checking Hardware ----
+[Pass] Comms are ready
+[Fail] Actuators not ready (robot not homed, run stretch_robot_home.py)
+Process Process-1:
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/hellorobot/stretch_body/body/stretch_body/robot_collision.py", line 334, in _collision_compute_worker
+    if collision_compute.startup():
+  File "/home/hellorobot/stretch_body/body/stretch_body/robot_collision.py", line 513, in startup
+    self.urdf = urdf_loader.URDF.load(urdf_name)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 3878, in load
+    return cls._from_xml(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 4088, in _from_xml
+    kwargs = cls._parse(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in _parse_simple_elements
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in <listcomp>
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 383, in _from_xml
+    return cls(**cls._parse(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in _parse_simple_elements
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in <listcomp>
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 1252, in _from_xml
+    kwargs = cls._parse(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 322, in _parse_simple_elements
+    v = t._from_xml(v, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 383, in _from_xml
+    return cls(**cls._parse(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 322, in _parse_simple_elements
+    v = t._from_xml(v, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 701, in _from_xml
+    meshes = cls._load_and_combine_meshes(fn, combine)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 684, in _load_and_combine_meshes
+    meshes = load_meshes(fn)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/utils.py", line 225, in load_meshes
+    meshes = trimesh.load(filename)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/load.py", line 126, in load
+    loaded = load_mesh(file_obj, file_type=file_type, resolver=resolver, **kwargs)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/load.py", line 202, in load_mesh
+    results = loader(file_obj, file_type=file_type, resolver=resolver, **kwargs)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/dae.py", line 37, in load_collada
+    import collada
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/__init__.py", line 29, in <module>
+    from collada import animation
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/animation.py", line 15, in <module>
+    from collada import source
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/source.py", line 17, in <module>
+    from collada.common import DaeObject, E, tag
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/common.py", line 1, in <module>
+    from functools import cache
+ImportError: cannot import name 'cache' from 'functools' (/usr/lib/python3.8/functools.py)
+[Pass] Sensors are ready
+[Pass] Battery voltage is 13.3 V
+
+---- Checking Software ----
+[Pass] Ubuntu 20.04 is ready
+[Warn] Not all APT pkgs are setup correctly (ros-noetic-librealsense2 should notbe installed)
+[Pass] Firmware is up-to-date
+[Warn] Python pkgs not up-to-date (run pip3 install -U hello-robot-stretch-diagnostics)
+[Pass] ROS Noetic is ready
+hellorobot@hellorobot-NUC8i5BEHS:~$ stretch_robot_home.py
+For use with S T R E T C H (R) from Hello Robot Inc.
+---------------------------------------------------------------------
+
+--------- Homing Head ----
+--------- Homing Lift ----
+Homing Lift...
+Process Process-2:
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/hellorobot/stretch_body/body/stretch_body/robot_collision.py", line 334, in _collision_compute_worker
+    if collision_compute.startup():
+  File "/home/hellorobot/stretch_body/body/stretch_body/robot_collision.py", line 513, in startup
+    self.urdf = urdf_loader.URDF.load(urdf_name)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 3878, in load
+    return cls._from_xml(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 4088, in _from_xml
+    kwargs = cls._parse(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in _parse_simple_elements
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in <listcomp>
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 383, in _from_xml
+    return cls(**cls._parse(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in _parse_simple_elements
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in <listcomp>
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 1252, in _from_xml
+    kwargs = cls._parse(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 322, in _parse_simple_elements
+    v = t._from_xml(v, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 383, in _from_xml
+    return cls(**cls._parse(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 322, in _parse_simple_elements
+    v = t._from_xml(v, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 701, in _from_xml
+    meshes = cls._load_and_combine_meshes(fn, combine)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 684, in _load_and_combine_meshes
+    meshes = load_meshes(fn)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/utils.py", line 225, in load_meshes
+    meshes = trimesh.load(filename)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/load.py", line 126, in load
+    loaded = load_mesh(file_obj, file_type=file_type, resolver=resolver, **kwargs)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/load.py", line 202, in load_mesh
+    results = loader(file_obj, file_type=file_type, resolver=resolver, **kwargs)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/dae.py", line 37, in load_collada
+    import collada
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/__init__.py", line 29, in <module>
+    from collada import animation
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/animation.py", line 15, in <module>
+    from collada import source
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/source.py", line 17, in <module>
+    from collada.common import DaeObject, E, tag
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/common.py", line 1, in <module>
+    from functools import cache
+ImportError: cannot import name 'cache' from 'functools' (/usr/lib/python3.8/functools.py)
+[INFO] [robot_monitor]: Wrist single tap: 1
+[INFO] [robot_monitor]: Base bump event
+Hardstop detected at motor position (rad) 116.70510864257812
+Marking Lift position to 1.099086 (m)
+Marking Lift position to 0.000000 (m)
+[INFO] [robot_monitor]: Guarded contact lift
+[INFO] [robot_monitor]: Wrist single tap: 4
+[INFO] [robot_monitor]: Base bump event
+[INFO] [robot_monitor]: Base bump event
+Lift homing successful
+--------- Homing Arm ----
+Homing Arm...
+[INFO] [robot_monitor]: Wrist single tap: 5
+[INFO] [robot_monitor]: Wrist single tap: 6
+Hardstop detected at motor position (rad) -19.672130584716797
+Marking Arm position to 0.000000 (m)
+[INFO] [robot_monitor]: Guarded contact arm
+[INFO] [robot_monitor]: Wrist single tap: 9
+[INFO] [robot_monitor]: Wrist single tap: 11
+[INFO] [robot_monitor]: Wrist single tap: 13
+Arm homing successful
+--------- Homing wrist_yaw ----
+Moving to first hardstop...
+First hardstop contact at position (ticks): -5
+-----
+Homing offset was -490
+Marking current position to zero ticks
+Homing offset is now  -510 (ticks)
+-----
+Current position (ticks): 93
+Moving to calibrated zero: (rad)
+[INFO] [robot_monitor]: Wrist single tap: 14
+[INFO] [robot_monitor]: Wrist single tap: 19
+[INFO] [robot_monitor]: Wrist single tap: 24
+[INFO] [robot_monitor]: Wrist single tap: 29
+[INFO] [robot_monitor]: Wrist single tap: 32
+[INFO] [robot_monitor]: Wrist single tap: 36
+[INFO] [robot_monitor]: Wrist single tap: 38
+[INFO] [robot_monitor]: Wrist single tap: 39
+[INFO] [robot_monitor]: Wrist single tap: 40
+[INFO] [robot_monitor]: Wrist single tap: 42
+[INFO] [robot_monitor]: Wrist single tap: 43
+[INFO] [robot_monitor]: Wrist single tap: 45
+[INFO] [robot_monitor]: Wrist single tap: 46
+[INFO] [robot_monitor]: Wrist single tap: 47
+[INFO] [robot_monitor]: Wrist single tap: 48
+hellorobot@hellorobot-NUC8i5BEHS:~$ stretch_robot_home.py
+For use with S T R E T C H (R) from Hello Robot Inc.
+---------------------------------------------------------------------
+
+--------- Homing Head ----
+--------- Homing Lift ----
+Homing Lift...
+Process Process-2:
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/hellorobot/stretch_body/body/stretch_body/robot_collision.py", line 334, in _collision_compute_worker
+    if collision_compute.startup():
+  File "/home/hellorobot/stretch_body/body/stretch_body/robot_collision.py", line 513, in startup
+    self.urdf = urdf_loader.URDF.load(urdf_name)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 3878, in load
+    return cls._from_xml(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 4088, in _from_xml
+    kwargs = cls._parse(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in _parse_simple_elements
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in <listcomp>
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 383, in _from_xml
+    return cls(**cls._parse(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in _parse_simple_elements
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in <listcomp>
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 1252, in _from_xml
+    kwargs = cls._parse(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 322, in _parse_simple_elements
+    v = t._from_xml(v, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 383, in _from_xml
+    return cls(**cls._parse(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 322, in _parse_simple_elements
+    v = t._from_xml(v, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 701, in _from_xml
+    meshes = cls._load_and_combine_meshes(fn, combine)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 684, in _load_and_combine_meshes
+    meshes = load_meshes(fn)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/utils.py", line 225, in load_meshes
+    meshes = trimesh.load(filename)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/load.py", line 126, in load
+    loaded = load_mesh(file_obj, file_type=file_type, resolver=resolver, **kwargs)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/load.py", line 202, in load_mesh
+    results = loader(file_obj, file_type=file_type, resolver=resolver, **kwargs)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/dae.py", line 37, in load_collada
+    import collada
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/__init__.py", line 29, in <module>
+    from collada import animation
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/animation.py", line 15, in <module>
+    from collada import source
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/source.py", line 17, in <module>
+    from collada.common import DaeObject, E, tag
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/common.py", line 1, in <module>
+    from functools import cache
+ImportError: cannot import name 'cache' from 'functools' (/usr/lib/python3.8/functools.py)
+Hardstop detected at motor position (rad) 116.125244140625
+Marking Lift position to 1.099086 (m)
+Marking Lift position to 0.000000 (m)
+[INFO] [robot_monitor]: Guarded contact lift
+[INFO] [robot_monitor]: Wrist single tap: 54
+[INFO] [robot_monitor]: Base bump event
+[INFO] [robot_monitor]: Wrist single tap: 55
+[INFO] [robot_monitor]: Base bump event
+Lift homing successful
+--------- Homing Arm ----
+Homing Arm...
+[INFO] [robot_monitor]: Wrist single tap: 58
+Hardstop detected at motor position (rad) -0.058643341064453125
+Marking Arm position to 0.000000 (m)
+[INFO] [robot_monitor]: Guarded contact arm
+[INFO] [robot_monitor]: Wrist single tap: 61
+[INFO] [robot_monitor]: Wrist single tap: 63
+Arm homing successful
+--------- Homing wrist_yaw ----
+Moving to first hardstop...
+First hardstop contact at position (ticks): -26
+-----
+Homing offset was -510
+Marking current position to zero ticks
+Homing offset is now  -521 (ticks)
+-----
+Current position (ticks): 89
+Moving to calibrated zero: (rad)
+[INFO] [robot_monitor]: Wrist single tap: 64
+[INFO] [robot_monitor]: Wrist single tap: 65
+[INFO] [robot_monitor]: Wrist single tap: 66
+hellorobot@hellorobot-NUC8i5BEHS:~$ stretch_robot_home.py
+For use with S T R E T C H (R) from Hello Robot Inc.
+---------------------------------------------------------------------
+
+--------- Homing Head ----
+--------- Homing Lift ----
+Homing Lift...
+Process Process-2:
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.8/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/hellorobot/stretch_body/body/stretch_body/robot_collision.py", line 334, in _collision_compute_worker
+    if collision_compute.startup():
+  File "/home/hellorobot/stretch_body/body/stretch_body/robot_collision.py", line 513, in startup
+    self.urdf = urdf_loader.URDF.load(urdf_name)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 3878, in load
+    return cls._from_xml(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 4088, in _from_xml
+    kwargs = cls._parse(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in _parse_simple_elements
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in <listcomp>
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 383, in _from_xml
+    return cls(**cls._parse(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in _parse_simple_elements
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 333, in <listcomp>
+    v = [t._from_xml(n, path, lazy_load_meshes) for n in vs]
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 1252, in _from_xml
+    kwargs = cls._parse(node, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 322, in _parse_simple_elements
+    v = t._from_xml(v, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 383, in _from_xml
+    return cls(**cls._parse(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 361, in _parse
+    kwargs.update(cls._parse_simple_elements(node, path, lazy_load_meshes))
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 322, in _parse_simple_elements
+    v = t._from_xml(v, path, lazy_load_meshes)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 701, in _from_xml
+    meshes = cls._load_and_combine_meshes(fn, combine)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/urdf.py", line 684, in _load_and_combine_meshes
+    meshes = load_meshes(fn)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/urchin/utils.py", line 225, in load_meshes
+    meshes = trimesh.load(filename)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/load.py", line 126, in load
+    loaded = load_mesh(file_obj, file_type=file_type, resolver=resolver, **kwargs)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/load.py", line 202, in load_mesh
+    results = loader(file_obj, file_type=file_type, resolver=resolver, **kwargs)
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/trimesh/exchange/dae.py", line 37, in load_collada
+    import collada
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/__init__.py", line 29, in <module>
+    from collada import animation
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/animation.py", line 15, in <module>
+    from collada import source
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/source.py", line 17, in <module>
+    from collada.common import DaeObject, E, tag
+  File "/home/hellorobot/.local/lib/python3.8/site-packages/collada/common.py", line 1, in <module>
+    from functools import cache
+ImportError: cannot import name 'cache' from 'functools' (/usr/lib/python3.8/functools.py)
+Hardstop detected at motor position (rad) 116.1500244140625
+Marking Lift position to 1.099086 (m)
+Marking Lift position to 0.000000 (m)
+[INFO] [robot_monitor]: Guarded contact lift
+[INFO] [robot_monitor]: Wrist single tap: 70
+[INFO] [robot_monitor]: Base bump event
+[INFO] [robot_monitor]: Base bump event
+Lift homing successful
+--------- Homing Arm ----
+Homing Arm...
+[INFO] [robot_monitor]: Wrist single tap: 71
+Hardstop detected at motor position (rad) 0.010995659045875072
+Marking Arm position to 0.000000 (m)
+[INFO] [robot_monitor]: Guarded contact arm
+[INFO] [robot_monitor]: Wrist single tap: 75
+[INFO] [robot_monitor]: Wrist single tap: 77
+Arm homing successful
+--------- Homing wrist_yaw ----
+Moving to first hardstop...
+First hardstop contact at position (ticks): -37
+-----
+Homing offset was -521
+Marking current position to zero ticks
+Homing offset is now  -507 (ticks)
+-----
+Current position (ticks): 68
+Moving to calibrated zero: (rad)
+[INFO] [robot_monitor]: Wrist single tap: 79
+[INFO] [robot_monitor]: Wrist single tap: 81
+[INFO] [robot_monitor]: Wrist single tap: 83
+[INFO] [robot_monitor]: Wrist single tap: 84
+[INFO] [robot_monitor]: Wrist single tap: 85
+[INFO] [robot_monitor]: Wrist single tap: 86
