@@ -10,24 +10,19 @@
 ## Run the robot installation script
 
 1. Open a terminal and install dependencies:
-
-   ```bash
+  ```bash
    sudo apt update
    sudo apt install git zip
-   ```
-
+  ```
 2. Restore the robot's calibration data in your home folder (`~/`). You need a directory named `stretch-re1-<XXXX>`, where `<XXXX>` is your robot's serial number.
-
 3. Clone the [stretch_install](https://github.com/hello-robot/stretch_install) repository and run the script:
-
-   ```bash
+  ```bash
    cd ~/
    git clone https://github.com/hello-robot/stretch_install
    cd stretch_install
    git pull
    ./stretch_new_robot_install.sh
-   ```
-
+  ```
    The script takes 20–30 minutes to complete.
 
 Reference: [Run the new robot installation script](https://docs.hello-robot.com/0.2/stretch-install/docs/robot_install/)
@@ -35,8 +30,7 @@ Reference: [Run the new robot installation script](https://docs.hello-robot.com/
 ## Post-install steps
 
 1. Reboot the robot before continuing so all install changes take effect, then apply the [stretch_body](https://github.com/hello-robot/stretch_body) bugfix for Python 3.8:
-
-   ```bash
+  ```bash
    cd ~/
    git clone https://github.com/hello-robot/stretch_body.git
    cd stretch_body
@@ -44,19 +38,13 @@ Reference: [Run the new robot installation script](https://docs.hello-robot.com/
    git pull
    cd body
    python3 -m pip install -e .
-   ```
-
+  ```
 2. Run migration and firmware tools:
-
-   ```bash
+  ```bash
    RE1_migrate_params.py
    RE1_migrate_contacts.py
    REx_firmware_updater.py --install
-   ```
-
-   - [RE1_migrate_params.py](https://docs.hello-robot.com/0.3/developing/cli/#re1_migrate_paramspy) — parameter format migration
-   - [RE1_migrate_contacts.py](https://docs.hello-robot.com/0.3/developing/cli/#re1_migrate_contactspy) — contact threshold migration
-   - [REx_firmware_updater.py](https://docs.hello-robot.com/0.3/developing/cli/#rexfirmware_updaterpy) — firmware update
+  ```
 
 Reference: [Post install steps](https://docs.hello-robot.com/0.3/installation/robot_install/#post-install-steps)
 
@@ -75,8 +63,6 @@ REx_dynamixel_id_scan.py /dev/hello-dynamixel-wrist
 REx_discover_hello_devices.py --list
 ```
 
-See [`log.txt`](log.txt) for example successful output.
-
 ## Home procedure and system check
 
 Home the robot, then run the system check:
@@ -86,9 +72,6 @@ stretch_robot_home.py
 stretch_system_check.py -v
 ```
 
-- [stretch_robot_home.py](https://docs.hello-robot.com/0.3/developing/cli/#stretch_robot_homepy) — find joint zeros (required after every power-on)
-- [stretch_system_check.py](https://docs.hello-robot.com/0.3/developing/cli/#stretch_system_checkpy) — verify hardware and software
-
-`stretch_robot_home.py` must complete successfully before running motion tests in [`tests/`](tests/).
+`stretch_robot_home.py` must complete successfully before running motion tests in `[tests/](tests/)`.
 
 Expected result: hardware, firmware, and Python packages report **Pass**.
