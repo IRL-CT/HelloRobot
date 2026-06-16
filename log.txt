@@ -57,5 +57,21 @@ Serial Number = stretch-re1-1030
 [Pass] Ubuntu 20.04 is ready
 [Warn] Not all APT pkgs are setup correctly (ros-noetic-librealsense2 should notbe installed)
 [Pass] Firmware is up-to-date
-[Warn] Python pkgs not up-to-date (run pip3 install -U hello-robot-stretch-diagnostics)
+[Pass] Python pkgs are up-to-date
 [Pass] ROS Noetic is ready
+Traceback (most recent call last):
+  File "/home/hellorobot/.local/bin/stretch_system_check.py", line 642, in <module>
+    r.stop()
+  File "/home/hellorobot/stretch_body/body/stretch_body/robot.py", line 384, in stop
+    self.devices[k].stop()
+  File "/home/hellorobot/stretch_body/body/stretch_body/dynamixel_X_chain.py", line 111, in stop
+    self.motors[motor].stop(close_port=False)
+  File "/home/hellorobot/stretch_body/body/stretch_body/dynamixel_hello_XL430.py", line 256, in stop
+    self.disable_torque()
+  File "/home/hellorobot/stretch_body/body/stretch_body/dynamixel_hello_XL430.py", line 570, in disable_torque
+    self.motor.disable_torque()
+  File "/home/hellorobot/stretch_body/body/stretch_body/dynamixel_XL430.py", line 466, in disable_torque
+    self.handle_comm_result('XL430_ADDR_TORQUE_ENABLE', dxl_comm_result, dxl_error)
+  File "/home/hellorobot/stretch_body/body/stretch_body/dynamixel_XL430.py", line 279, in handle_comm_result
+    raise DynamixelCommError(comm_error_msg)
+stretch_body.dynamixel_XL430.DynamixelCommError: DXL Comm Error on /dev/hello-dynamixel-wrist ID 13. Attempted XL430_ADDR_TORQUE_ENABLE. Result COMM_RX_TIMEOUT. Error 0. Total Errors 1.
