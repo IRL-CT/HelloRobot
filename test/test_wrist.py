@@ -17,7 +17,7 @@ def main():
                 "Robot is not calibrated. Run stretch_robot_home.py first."
             )
 
-        angle = math.radians(14)
+        angle = math.radians(90)
 
         print("Rotating wrist yaw in one direction...")
         robot.end_of_arm.move_by("wrist_yaw", angle)
