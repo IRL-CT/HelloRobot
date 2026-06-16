@@ -17,12 +17,12 @@ def main():
             )
 
         print("Moving lift up 3 cm...")
-        robot.lift.move_by(0.1)  # meters
+        robot.lift.move_by(0.03)  # meters
         robot.push_command()
         time.sleep(3)
 
         print("Moving lift down 3 cm...")
-        robot.lift.move_by(-0.1)
+        robot.lift.move_by(-0.03)
         robot.push_command()
         time.sleep(3)
 
