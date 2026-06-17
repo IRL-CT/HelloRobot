@@ -76,6 +76,7 @@ class BluetoothGamePadTeleop(gamepad_teleop_module.GamePadTeleop):
             joystick_index=joystick_index,
             print_status=print_status,
         )
+        self.controller_state = self.gamepad_controller.gamepad_state
 
     def manage_shutdown(self, robot):
         """Disable the official long-press Back PC shutdown in test mode."""
@@ -137,9 +138,7 @@ def main():
         collision_mgmt=not args.no_collision_mgmt,
     )
 
-    if not teleop.startup():
-        print("ERROR: Robot startup failed.", file=sys.stderr)
-        return 1
+    teleop.startup()
 
     if not teleop.robot.is_calibrated():
         print(

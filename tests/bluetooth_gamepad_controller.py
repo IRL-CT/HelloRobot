@@ -132,7 +132,7 @@ class BluetoothGamepadController(threading.Thread):
 
         self._joystick = None
         self._poll_counter = 0
-        self.gamepad_state = self.get_state()
+        self.gamepad_state = dict(DEFAULT_STATE)
 
     def run(self):
         clock = pygame.time.Clock()
