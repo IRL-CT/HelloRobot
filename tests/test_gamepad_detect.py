@@ -6,7 +6,7 @@ Use this before ``test_w_gamepad.py`` to confirm pairing and axis layout.
 Examples:
   python3 test_gamepad_detect.py --list
   python3 test_gamepad_detect.py
-  python3 test_gamepad_detect.py --profile 8bitdo_lite2
+  python3 test_gamepad_detect.py --profile 8bitdo
 """
 
 from __future__ import annotations
@@ -204,7 +204,7 @@ def main():
     parser.add_argument(
         "--profile",
         default="auto",
-        choices=["auto", "xbox", "8bitdo_lite2"],
+        choices=["auto", "xbox", "8bitdo"],
         help="Controller mapping profile (default: auto-detect).",
     )
     parser.add_argument(

@@ -13,7 +13,7 @@ Requirements:
 Quick start:
   python3 test_gamepad_detect.py --list
   python3 test_gamepad_detect.py
-  python3 test_w_gamepad.py
+  python3 test_w_gamepad.py --profile 8bitdo
 
 Mapping (matches official gamepad teleop):
   Left stick                 base tank drive
