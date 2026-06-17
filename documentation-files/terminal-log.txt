@@ -1,0 +1,71 @@
+hellorobot@hellorobot-NUC8i5BEHS:~$ stretch_robot_home.py
+For use with S T R E T C H (R) from Hello Robot Inc.
+---------------------------------------------------------------------
+
+--------- Homing Head ----
+--------- Homing Lift ----
+Homing Lift...
+Hardstop detected at motor position (rad) 114.00455474853516
+Marking Lift position to 1.099086 (m)
+Marking Lift position to 0.000000 (m)
+[INFO] [robot_monitor]: Guarded contact lift
+[INFO] [robot_monitor]: Wrist single tap: 14
+[INFO] [robot_monitor]: Base bump event
+[INFO] [robot_monitor]: Base bump event
+Lift homing successful
+--------- Homing Arm ----
+Homing Arm...
+[INFO] [robot_monitor]: Wrist single tap: 15
+[WARNING] [tool_none]: Dynamixel communication error during pull_status on tool_none: 
+Hardstop detected at motor position (rad) -13.228897094726562
+Marking Arm position to 0.000000 (m)
+[INFO] [robot_monitor]: Guarded contact arm
+[INFO] [robot_monitor]: Wrist single tap: 19
+[INFO] [robot_monitor]: Wrist single tap: 21
+Arm homing successful
+--------- Homing wrist_yaw ----
+Moving to first hardstop...
+[INFO] [robot_monitor]: Wrist single tap: 23
+First hardstop contact at position (ticks): -4109
+-----
+Homing offset was 3597
+Marking current position to zero ticks
+Homing offset is now  7677 (ticks)
+-----
+Current position (ticks): 60
+Moving to calibrated zero: (rad)
+[INFO] [robot_monitor]: Wrist single tap: 25
+[INFO] [robot_monitor]: Wrist single tap: 28
+[INFO] [robot_monitor]: Wrist single tap: 30
+[INFO] [robot_monitor]: Wrist single tap: 32
+[INFO] [robot_monitor]: Wrist single tap: 34
+[INFO] [robot_monitor]: Wrist single tap: 36
+[INFO] [robot_monitor]: Wrist single tap: 40
+[INFO] [robot_monitor]: Wrist single tap: 46
+[INFO] [robot_monitor]: Wrist single tap: 52
+[INFO] [robot_monitor]: Wrist single tap: 55
+[INFO] [robot_monitor]: Wrist single tap: 59
+[INFO] [robot_monitor]: Wrist single tap: 61
+[INFO] [robot_monitor]: Wrist single tap: 63
+[INFO] [robot_monitor]: Wrist single tap: 64
+hellorobot@hellorobot-NUC8i5BEHS:~$ stretch_system_check.py
+For use with S T R E T C H (R) from Hello Robot Inc.
+---------------------------------------------------------------------
+
+Model = Stretch RE1
+Tool = None
+Serial Number = stretch-re1-1030
+
+
+---- Checking Hardware ----
+[Pass] Comms are ready
+[Pass] Actuators are ready
+[Pass] Sensors are ready
+[Pass] Battery voltage is 13.4 V
+
+---- Checking Software ----
+[Pass] Ubuntu 20.04 is ready
+[Warn] Not all APT pkgs are setup correctly (ros-noetic-librealsense2 should notbe installed)
+[Pass] Firmware is up-to-date
+[Pass] Python pkgs are up-to-date
+[Pass] ROS Noetic is ready

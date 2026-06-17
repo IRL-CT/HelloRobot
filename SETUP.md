@@ -50,13 +50,13 @@ Reference: [Post install steps](https://docs.hello-robot.com/0.3/installation/ro
 
 ## Troubleshooting
 
-If URDF or visualization tools fail with a `pycollada` error:
+- If URDF or visualization tools fail with a `pycollada` error:
 
 ```bash
 pip install pycollada==0.8
 ```
 
-To verify hardware communication:
+- To verify hardware communication:
 
 ```bash
 REx_dynamixel_id_scan.py /dev/hello-dynamixel-wrist
@@ -69,9 +69,47 @@ Home the robot, then run the system check:
 
 ```bash
 stretch_robot_home.py
-stretch_system_check.py -v
+stretch_system_check.py
 ```
 
 `stretch_robot_home.py` must complete successfully before running motion tests in `[tests/](tests/)`.
 
-Expected result: hardware, firmware, and Python packages report **Pass**.
+Expected result: hardware, firmware, and Python packages report **Pass**. See [example terminal output](documentation-files/terminal-log.txt) and [complete homing procedure video](documentation-files/complete-homing-procedure-video.MOV)  from a successful homing and system check.
+
+## VNC viewer setup
+
+Use these steps on the robot to enable screen sharing over VNC.
+
+1. Install Vino
+
+```bash
+sudo apt update
+sudo apt install vino
+```
+
+1. Enable screen sharing**
+
+Open **Settings → Sharing**:
+
+1. Turn **Sharing** on.
+2. Open **Screen Sharing**.
+3. Enable **Screen sharing**.
+4. Enable **Remote control**.
+5. Set a VNC password.
+6. Disable encryption requirement**
+
+Some VNC clients cannot connect when encryption is required. Run:
+
+```bash
+gsettings set org.gnome.Vino require-encryption false
+```
+
+1. Get the robot IP address**
+
+On the robot, run:
+
+```bash
+hostname -I
+```
+
+Use the first IP address shown to connect from your VNC viewer.
