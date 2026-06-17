@@ -4,7 +4,7 @@ Setup and test resources for **Stretch RE1** robots.
 
 ## Documentation
 
-- [Setup guide](SETUP.md) — Ubuntu install, robot software, post-install steps, and troubleshooting
+- [Setup guide](SETUP.md) — Ubuntu install, robot software, post-install steps, VNC remote access, and troubleshooting
 
 ## Repository contents
 
