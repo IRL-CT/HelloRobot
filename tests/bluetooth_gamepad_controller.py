@@ -24,8 +24,7 @@ except ImportError as exc:
 
 
 # Default axis layout for Bluetooth Xbox-style controllers under pygame/SDL.
-# Run test_gamepad_detect.py if sticks or triggers feel wrong on your pad.
-BT_AXIS_MAP = {
+XBOX_AXIS_MAP = {
     "left_stick_x": 0,
     "left_stick_y": 1,
     "right_stick_x": 3,
@@ -35,7 +34,7 @@ BT_AXIS_MAP = {
 }
 
 # Pygame button index -> stretch gamepad_state key (Xbox layout).
-BT_BUTTON_MAP = {
+XBOX_BUTTON_MAP = {
     0: "bottom_button_pressed",           # A
     1: "right_button_pressed",            # B
     2: "left_button_pressed",             # X
@@ -48,6 +47,53 @@ BT_BUTTON_MAP = {
     9: "right_stick_button_pressed",
     10: "middle_led_ring_button_pressed",  # Guide / Xbox (if exposed)
 }
+
+# 8BitDo Lite 2 (D mode on Linux): four stick axes, digital L2/R2 buttons.
+# Source: retroarch udev autoconfig + SDL "8BitDo 8BitDo Lite 2" device name.
+LITE2_AXIS_MAP = {
+    "left_stick_x": 0,
+    "left_stick_y": 1,
+    "right_stick_x": 2,
+    "right_stick_y": 3,
+}
+
+LITE2_BUTTON_MAP = {
+    0: "bottom_button_pressed",              # A
+    1: "right_button_pressed",               # B
+    3: "left_button_pressed",                # X
+    4: "top_button_pressed",                 # Y
+    6: "left_shoulder_button_pressed",       # L
+    7: "right_shoulder_button_pressed",      # R
+    10: "select_button_pressed",             # Select
+    11: "start_button_pressed",              # Start
+    13: "left_stick_button_pressed",         # L3
+    14: "right_stick_button_pressed",        # R3
+}
+
+# Lite 2 has no analog triggers; L2/R2 are digital buttons.
+LITE2_TRIGGER_BUTTONS = {
+    8: "left_trigger_pulled",    # L2 -> precision mode
+    9: "right_trigger_pulled",   # R2 -> fast base mode
+}
+
+CONTROLLER_PROFILES = {
+    "xbox": {
+        "label": "Xbox-style (6 axes with analog triggers)",
+        "axis_map": XBOX_AXIS_MAP,
+        "button_map": XBOX_BUTTON_MAP,
+        "trigger_buttons": {},
+    },
+    "8bitdo_lite2": {
+        "label": "8BitDo Lite 2 (4 axes, digital L2/R2)",
+        "axis_map": LITE2_AXIS_MAP,
+        "button_map": LITE2_BUTTON_MAP,
+        "trigger_buttons": LITE2_TRIGGER_BUTTONS,
+    },
+}
+
+# Backward-compatible alias used by test_gamepad_detect.py.
+BT_AXIS_MAP = XBOX_AXIS_MAP
+BT_BUTTON_MAP = XBOX_BUTTON_MAP
 
 DEFAULT_STATE = {
     "middle_led_ring_button_pressed": False,
@@ -74,6 +120,30 @@ DEFAULT_STATE = {
 }
 
 DEAD_ZONE = 0.08
+
+
+def list_profiles():
+    """Return available profile names and descriptions."""
+    return {
+        name: profile["label"]
+        for name, profile in CONTROLLER_PROFILES.items()
+    }
+
+
+def detect_profile(device_name):
+    """Pick a profile from the SDL device name."""
+    name_lower = device_name.lower()
+    if "8bitdo" in name_lower and "lite" in name_lower:
+        return "8bitdo_lite2"
+    return "xbox"
+
+
+def get_profile(profile_name):
+    """Return a profile dict by name."""
+    if profile_name not in CONTROLLER_PROFILES:
+        known = ", ".join(sorted(CONTROLLER_PROFILES))
+        raise ValueError(f"Unknown profile '{profile_name}'. Choose from: {known}")
+    return CONTROLLER_PROFILES[profile_name]
 
 
 def list_joysticks():
@@ -115,15 +185,25 @@ class BluetoothGamepadController(threading.Thread):
         self,
         joystick_index=0,
         print_status=True,
+        profile="auto",
         axis_map=None,
         button_map=None,
+        trigger_buttons=None,
     ):
         super().__init__(name=self.__class__.__name__)
         self.daemon = True
         self.joystick_index = joystick_index
         self.print_status = print_status
-        self.axis_map = dict(axis_map or BT_AXIS_MAP)
-        self.button_map = dict(button_map or BT_BUTTON_MAP)
+        self.requested_profile = profile
+        self.active_profile = None
+
+        self.axis_map = dict(axis_map or XBOX_AXIS_MAP)
+        self.button_map = dict(button_map or XBOX_BUTTON_MAP)
+        self.trigger_buttons = dict(trigger_buttons or {})
+
+        if axis_map is None and button_map is None and trigger_buttons is None:
+            if profile != "auto":
+                self._load_profile(profile)
 
         self.lock = threading.Lock()
         self.stop_thread = False
@@ -133,6 +213,13 @@ class BluetoothGamepadController(threading.Thread):
         self._joystick = None
         self._poll_counter = 0
         self.gamepad_state = dict(DEFAULT_STATE)
+
+    def _load_profile(self, profile_name):
+        profile = get_profile(profile_name)
+        self.active_profile = profile_name
+        self.axis_map = dict(profile["axis_map"])
+        self.button_map = dict(profile["button_map"])
+        self.trigger_buttons = dict(profile.get("trigger_buttons", {}))
 
     def run(self):
         clock = pygame.time.Clock()
@@ -162,6 +249,12 @@ class BluetoothGamepadController(threading.Thread):
         self._joystick = pygame.joystick.Joystick(self.joystick_index)
         self._joystick.init()
 
+        if self.requested_profile == "auto":
+            detected = detect_profile(self._joystick.get_name())
+            self._load_profile(detected)
+        elif self.active_profile is None:
+            self._load_profile(self.requested_profile)
+
         with self.lock:
             self.is_gamepad_dongle = True
 
@@ -169,6 +262,10 @@ class BluetoothGamepadController(threading.Thread):
             print(
                 f"Bluetooth gamepad connected: "
                 f"[{self.joystick_index}] {self._joystick.get_name()}"
+            )
+            print(
+                f"Controller profile: {self.active_profile} "
+                f"({get_profile(self.active_profile)['label']})"
             )
         return True
 
@@ -218,6 +315,12 @@ class BluetoothGamepadController(threading.Thread):
                 if button_index >= self._joystick.get_numbuttons():
                     continue
                 state[state_key] = bool(self._joystick.get_button(button_index))
+
+            for button_index, trigger_key in self.trigger_buttons.items():
+                if button_index >= self._joystick.get_numbuttons():
+                    continue
+                if self._joystick.get_button(button_index):
+                    state[trigger_key] = 1.0
 
             if self._joystick.get_numhats() > 0:
                 hat_x, hat_y = self._joystick.get_hat(0)

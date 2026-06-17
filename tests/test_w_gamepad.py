@@ -66,7 +66,13 @@ Press Ctrl+C to quit.
 class BluetoothGamePadTeleop(gamepad_teleop_module.GamePadTeleop):
     """GamePadTeleop with a pygame-based Bluetooth controller."""
 
-    def __init__(self, joystick_index=0, print_status=True, collision_mgmt=True):
+    def __init__(
+        self,
+        joystick_index=0,
+        print_status=True,
+        collision_mgmt=True,
+        profile="auto",
+    ):
         super().__init__(
             robot_instance=True,
             print_dongle_status=False,
@@ -75,6 +81,7 @@ class BluetoothGamePadTeleop(gamepad_teleop_module.GamePadTeleop):
         self.gamepad_controller = BluetoothGamepadController(
             joystick_index=joystick_index,
             print_status=print_status,
+            profile=profile,
         )
         self.controller_state = self.gamepad_controller.gamepad_state
 
@@ -113,6 +120,12 @@ def parse_args():
         action="store_true",
         help="Disable stretch_body collision management.",
     )
+    parser.add_argument(
+        "--profile",
+        default="auto",
+        choices=["auto", "xbox", "8bitdo_lite2"],
+        help="Controller mapping profile (default: auto-detect).",
+    )
     return parser.parse_args()
 
 
@@ -136,6 +149,7 @@ def main():
         joystick_index=args.index,
         print_status=True,
         collision_mgmt=not args.no_collision_mgmt,
+        profile=args.profile,
     )
 
     teleop.startup()

@@ -6,7 +6,7 @@ Use this before ``test_w_gamepad.py`` to confirm pairing and axis layout.
 Examples:
   python3 test_gamepad_detect.py --list
   python3 test_gamepad_detect.py
-  python3 test_gamepad_detect.py --index 0
+  python3 test_gamepad_detect.py --profile 8bitdo_lite2
 """
 
 from __future__ import annotations
@@ -16,10 +16,13 @@ import sys
 import time
 
 from bluetooth_gamepad_controller import (
-    BT_AXIS_MAP,
-    BT_BUTTON_MAP,
     DEFAULT_STATE,
+    _normalize_stick,
+    _normalize_trigger,
+    detect_profile,
+    get_profile,
     list_joysticks,
+    list_profiles,
 )
 
 
@@ -44,6 +47,10 @@ Official mapping (same as stretch_gamepad_teleop.py):
   Start                 home robot if not calibrated
   Back (hold 2 s)       ignored in test_w_gamepad.py (no PC shutdown)
 
+8BitDo Lite 2 notes:
+  - Set the rear switch to D mode before pairing with Ubuntu.
+  - Right stick Y controls lift; L2/R2 act as precision / fast-base buttons.
+
 Press Ctrl+C to exit.
 """
 
@@ -57,11 +64,51 @@ def print_device_list():
 
     print("Detected gamepads:")
     for index, name in devices:
-        print(f"  [{index}] {name}")
+        suggested = detect_profile(name)
+        print(f"  [{index}] {name}  (suggested profile: {suggested})")
     return 0
 
 
-def run_monitor(joystick_index):
+def map_state(stick, profile_name):
+    profile = get_profile(profile_name)
+    axis_map = profile["axis_map"]
+    button_map = profile["button_map"]
+    trigger_buttons = profile.get("trigger_buttons", {})
+
+    mapped = dict(DEFAULT_STATE)
+
+    for name, axis_index in axis_map.items():
+        if axis_index >= stick.get_numaxes():
+            continue
+        raw = stick.get_axis(axis_index)
+        if name in ("left_stick_x", "right_stick_x"):
+            mapped[name] = _normalize_stick(raw)
+        elif name in ("left_stick_y", "right_stick_y"):
+            mapped[name] = _normalize_stick(-raw)
+        elif name == "left_trigger":
+            mapped["left_trigger_pulled"] = _normalize_trigger(raw)
+        elif name == "right_trigger":
+            mapped["right_trigger_pulled"] = _normalize_trigger(raw)
+
+    for button_index, state_key in button_map.items():
+        if button_index < stick.get_numbuttons():
+            mapped[state_key] = bool(stick.get_button(button_index))
+
+    for button_index, trigger_key in trigger_buttons.items():
+        if button_index < stick.get_numbuttons() and stick.get_button(button_index):
+            mapped[trigger_key] = 1.0
+
+    if stick.get_numhats() > 0:
+        hat_x, hat_y = stick.get_hat(0)
+        mapped["left_pad_pressed"] = hat_x == -1
+        mapped["right_pad_pressed"] = hat_x == 1
+        mapped["top_pad_pressed"] = hat_y == 1
+        mapped["bottom_pad_pressed"] = hat_y == -1
+
+    return mapped
+
+
+def run_monitor(joystick_index, profile_name):
     try:
         import pygame
     except ImportError:
@@ -90,9 +137,14 @@ def run_monitor(joystick_index):
 
     stick = pygame.joystick.Joystick(joystick_index)
     stick.init()
+    device_name = stick.get_name()
+
+    if profile_name == "auto":
+        profile_name = detect_profile(device_name)
 
     print(HELP)
-    print(f"Using [{joystick_index}] {stick.get_name()}")
+    print(f"Using [{joystick_index}] {device_name}")
+    print(f"Profile: {profile_name} ({get_profile(profile_name)['label']})")
     print(f"Axes: {stick.get_numaxes()}  Buttons: {stick.get_numbuttons()}  "
           f"Hats: {stick.get_numhats()}")
     print("-" * 72)
@@ -111,37 +163,14 @@ def run_monitor(joystick_index):
                 if stick.get_button(idx)
             ]
             hat_value = stick.get_hat(0) if stick.get_numhats() > 0 else (0, 0)
-
-            mapped = dict(DEFAULT_STATE)
-            for name, axis_index in BT_AXIS_MAP.items():
-                if axis_index >= stick.get_numaxes():
-                    continue
-                raw = stick.get_axis(axis_index)
-                if name.endswith("_x"):
-                    mapped[name] = raw
-                elif name.endswith("_y"):
-                    mapped[name] = -raw
-                elif name == "left_trigger":
-                    mapped["left_trigger_pulled"] = raw
-                elif name == "right_trigger":
-                    mapped["right_trigger_pulled"] = raw
-
-            for button_index, state_key in BT_BUTTON_MAP.items():
-                if button_index < stick.get_numbuttons():
-                    mapped[state_key] = bool(stick.get_button(button_index))
-
-            if stick.get_numhats() > 0:
-                mapped["left_pad_pressed"] = hat_value[0] == -1
-                mapped["right_pad_pressed"] = hat_value[0] == 1
-                mapped["top_pad_pressed"] = hat_value[1] == 1
-                mapped["bottom_pad_pressed"] = hat_value[1] == -1
+            mapped = map_state(stick, profile_name)
 
             print(
                 f"\rAxes [{', '.join(axis_values)}]  "
                 f"Buttons [{', '.join(button_values) or 'none'}]  "
                 f"Hat {hat_value}  "
-                f"Base stick ({mapped['left_stick_x']:+.2f}, "
-                f"{mapped['left_stick_y']:+.2f})",
+                f"Base ({mapped['left_stick_x']:+.2f}, {mapped['left_stick_y']:+.2f})  "
+                f"Lift {mapped['right_stick_y']:+.2f}",
                 end="",
                 flush=True,
             )
@@ -172,12 +201,29 @@ def main():
         default=0,
         help="Joystick index to monitor (default: 0).",
     )
+    parser.add_argument(
+        "--profile",
+        default="auto",
+        choices=["auto", "xbox", "8bitdo_lite2"],
+        help="Controller mapping profile (default: auto-detect).",
+    )
+    parser.add_argument(
+        "--list-profiles",
+        action="store_true",
+        help="List available mapping profiles and exit.",
+    )
     args = parser.parse_args()
+
+    if args.list_profiles:
+        print("Available profiles:")
+        for name, label in list_profiles().items():
+            print(f"  {name}: {label}")
+        return 0
 
     if args.list:
         return print_device_list()
 
-    return run_monitor(args.index)
+    return run_monitor(args.index, args.profile)
 
 
 if __name__ == "__main__":
